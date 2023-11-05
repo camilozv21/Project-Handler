@@ -19,7 +19,6 @@ export const NavigationBar = () => {
           </Link>
         </article>
         <article className='flex items-center flex-shrink-0'>
-          {/* <Link to='/' className='block no-underline lg:inline-block lg:mt-0 text-black mt-0 hover:text-opacity-70 font-semibold'>Inicio</Link> */}
           <Link to='/' className='no-underline text-sm md:text-base lg:text-lg text-black font-semibold md:ml-5' onClick={() => setShowLogin(true)}>Iniciar sesión</Link>
           <Link to='/' className='no-underline text-sm md:text-base lg:text-lg text-black font-semibold ml-2 md:ml-5' onClick={() => setShowRegister(true)}>Registrarse</Link>
         </article>
