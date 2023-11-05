@@ -13,8 +13,8 @@ export const NavigationBar = () => {
       <nav className='flex items-center shadow sm:h-18 md:h-24 pr-2 py-1 pl-2 lg:pl-5'>
         <article className='flex items-center mr-6'>
           <Link to='/' className='block lg:inline-block lg:mt-0 text-black mt-0 hover:text-opacity-70'>
-            <div className='max-w-sm'>
-              <img src={image} alt='Logo de la empresa' className='w-full cursor-pointer'/>
+            <div className=' max-w-xs'>
+              <img src={image} alt='Logo de la empresa' className=' w-auto cursor-pointer'/>
             </div>
           </Link>
         </article>

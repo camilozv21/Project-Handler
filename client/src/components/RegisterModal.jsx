@@ -1,6 +1,15 @@
 import Modal from 'react-bootstrap/Modal';
+import { useState } from 'react'
 
 export const RegisterModal = (props) => {
+  const [name, setName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password1, setPassword1] = useState('')
+  const [password2, setPassword2] = useState('')
+
+  
+
   return (
     <>
       <Modal
