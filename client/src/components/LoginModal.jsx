@@ -5,7 +5,7 @@ export const LoginModal = (props) => {
     <>
     <Modal
       {...props}
-      size='lg'>
+      size='md'>
       <Modal.Header closeButton>
         <Modal.Title id='contained-modal-title-vcenter'>
           Iniciar sesión

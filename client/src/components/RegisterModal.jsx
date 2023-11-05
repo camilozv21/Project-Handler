@@ -5,7 +5,7 @@ export const RegisterModal = (props) => {
     <>
       <Modal
         {...props}
-        size='lg'
+        size='md'
         >
         <Modal.Header closeButton>
           <Modal.Title id='contained-modal-title-vcenter'>
