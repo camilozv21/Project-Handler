@@ -7,6 +7,7 @@ const session = require('express-session');
 const port = process.env.PORT || 5000;
 const connectDB = require('./database/config/db');
 const { graphqlHTTP } = require('express-graphql');
+const schema = require('./database/schema/schema');
 
 const app = express();
 
@@ -23,7 +24,7 @@ app.use(cookieParser());
 app.use(cors())
 
 app.use('/graphql', graphqlHTTP({
-  // schema,
+  schema,
   graphiql: process.env.NODE_ENV === 'development'
 }))
 

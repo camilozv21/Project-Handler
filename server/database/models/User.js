@@ -28,7 +28,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: 'default.jpg'
   },
-  projects: [{
+  projectId: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Project'
   }]

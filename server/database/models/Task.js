@@ -6,7 +6,7 @@ const TaskSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  project: {
+  projectId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Project'
   },
@@ -24,7 +24,7 @@ const TaskSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
-  owner: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   }
