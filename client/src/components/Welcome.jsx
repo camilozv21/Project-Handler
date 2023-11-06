@@ -1,5 +1,5 @@
-import image from '../assets/Welcome.jpg'
-import image2 from '../assets/description.jpg'
+import image from './assets/Welcome.jpg'
+import image2 from './assets/description.jpg'
 
 export const Welcome = () => {
   return (

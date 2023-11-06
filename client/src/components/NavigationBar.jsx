@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import image from '../assets/phlogo.png'
+import image from './assets/phlogo.png'
 import { RegisterModal } from './RegisterModal'
 import { LoginModal } from './LoginModal'
 
