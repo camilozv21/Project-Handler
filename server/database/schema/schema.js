@@ -1,6 +1,7 @@
-const Project = require('../models/Project');
-const User = require('../models/User');
-const Task = require('../models/Task');
+const Project = require("../models/Project");
+const User = require("../models/User");
+const Task = require("../models/Task");
+const { createToken } = require("../../middleware/auth");
 
 const {
   GraphQLObjectType,
@@ -9,10 +10,11 @@ const {
   GraphQLSchema,
   GraphQLList,
   GraphQLNonNull,
-  GraphQLEnumType } = require('graphql')
+  GraphQLEnumType,
+} = require("graphql");
 
 const ProjectType = new GraphQLObjectType({
-  name: 'Project',
+  name: "Project",
   fields: () => ({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
@@ -21,19 +23,19 @@ const ProjectType = new GraphQLObjectType({
       type: new GraphQLList(TaskType),
       resolve(parent, args) {
         return Task.find({ projectId: parent.id });
-      }
+      },
     },
     userId: {
       type: UserType,
       resolve(parent, args) {
         return User.findById(parent.userId);
-      }
-    }
-  })
+      },
+    },
+  }),
 });
 
 const UserType = new GraphQLObjectType({
-  name: 'User',
+  name: "User",
   fields: () => ({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
@@ -45,13 +47,13 @@ const UserType = new GraphQLObjectType({
       type: new GraphQLList(ProjectType),
       resolve(parent, args) {
         return Project.find({ projectId: parent.projectId });
-      }
+      },
     },
-  })
+  }),
 });
 
 const TaskType = new GraphQLObjectType({
-  name: 'Task',
+  name: "Task",
   fields: () => ({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
@@ -59,7 +61,7 @@ const TaskType = new GraphQLObjectType({
       type: ProjectType,
       resolve(parent, args) {
         return Project.findById(parent.projectId);
-      }
+      },
     },
     status: { type: GraphQLString },
     description: { type: GraphQLString },
@@ -68,34 +70,34 @@ const TaskType = new GraphQLObjectType({
       type: UserType,
       resolve(parent, args) {
         return User.findById(parent.userId);
-      }
-    }
-  })
+      },
+    },
+  }),
 });
 
 const RootQuery = new GraphQLObjectType({
-  name: 'RootQueryType',
+  name: "RootQueryType",
   fields: {
     project: {
       type: ProjectType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
         return Project.findById(args.id);
-      }
+      },
     },
     user: {
       type: UserType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
         return User.findById(args.id);
-      }
+      },
     },
     task: {
       type: TaskType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
         return Task.findById(args.id);
-      }
+      },
     },
     projects: {
       type: new GraphQLList(ProjectType),
@@ -105,38 +107,38 @@ const RootQuery = new GraphQLObjectType({
         } else {
           return Project.find({});
         }
-      }
+      },
     },
     users: {
       type: new GraphQLList(UserType),
       resolve(parent, args) {
         return User.find({});
-      }
+      },
     },
     tasks: {
       type: new GraphQLList(TaskType),
       resolve(parent, args) {
         return Task.find({});
-      }
-    }
-  }
+      },
+    },
+  },
 });
 
 const mutation = new GraphQLObjectType({
-  name: 'Mutation',
+  name: "Mutation",
   fields: {
     addProject: {
       type: ProjectType,
       args: {
         name: { type: new GraphQLNonNull(GraphQLString) },
         image: { type: GraphQLString },
-        userId: { type: new GraphQLNonNull(GraphQLID) }
+        userId: { type: new GraphQLNonNull(GraphQLID) },
       },
       async resolve(parent, args) {
         let project = new Project({
           name: args.name,
           image: args.image,
-          userId: args.userId
+          userId: args.userId,
         });
 
         const newProject = await project.save();
@@ -144,7 +146,7 @@ const mutation = new GraphQLObjectType({
         user.projectId.push(newProject.id);
         await user.save();
         return newProject;
-      }
+      },
     },
     addUser: {
       type: UserType,
@@ -153,7 +155,7 @@ const mutation = new GraphQLObjectType({
         lastname: { type: new GraphQLNonNull(GraphQLString) },
         email: { type: new GraphQLNonNull(GraphQLString) },
         password: { type: new GraphQLNonNull(GraphQLString) },
-        image: { type: GraphQLString }
+        image: { type: GraphQLString },
       },
       resolve(parent, args) {
         let user = new User({
@@ -161,10 +163,10 @@ const mutation = new GraphQLObjectType({
           lastname: args.lastname,
           email: args.email,
           password: args.password,
-          image: args.image
+          image: args.image,
         });
         return user.save();
-      }
+      },
     },
     addTask: {
       type: TaskType,
@@ -174,7 +176,7 @@ const mutation = new GraphQLObjectType({
         status: { type: new GraphQLNonNull(GraphQLString) },
         description: { type: new GraphQLNonNull(GraphQLString) },
         deadLine: { type: new GraphQLNonNull(GraphQLString) },
-        userId: { type: new GraphQLNonNull(GraphQLID) }
+        userId: { type: new GraphQLNonNull(GraphQLID) },
       },
       async resolve(parent, args) {
         let task = new Task({
@@ -183,7 +185,7 @@ const mutation = new GraphQLObjectType({
           status: args.status,
           description: args.description,
           deadLine: args.deadLine,
-          userId: args.userId
+          userId: args.userId,
         });
 
         const newTask = await task.save();
@@ -191,14 +193,14 @@ const mutation = new GraphQLObjectType({
         project.tasks.push(newTask.id);
         await project.save();
         return newTask;
-      }
+      },
     },
     updateProject: {
       type: ProjectType,
       args: {
         id: { type: new GraphQLNonNull(GraphQLID) },
         name: { type: GraphQLString },
-        image: { type: GraphQLString }
+        image: { type: GraphQLString },
       },
       resolve(parent, args) {
         return Project.findByIdAndUpdate(
@@ -206,12 +208,12 @@ const mutation = new GraphQLObjectType({
           {
             $set: {
               name: args.name,
-              image: args.image
-            }
+              image: args.image,
+            },
           },
           { new: true }
         );
-      }
+      },
     },
     updateUser: {
       type: UserType,
@@ -221,7 +223,7 @@ const mutation = new GraphQLObjectType({
         lastname: { type: GraphQLString },
         email: { type: GraphQLString },
         password: { type: GraphQLString },
-        image: { type: GraphQLString }
+        image: { type: GraphQLString },
       },
       resolve(parent, args) {
         return User.findByIdAndUpdate(
@@ -232,12 +234,12 @@ const mutation = new GraphQLObjectType({
               lastname: args.lastname,
               email: args.email,
               password: args.password,
-              image: args.image
-            }
+              image: args.image,
+            },
           },
           { new: true }
         );
-      }
+      },
     },
     updateTask: {
       type: TaskType,
@@ -247,7 +249,7 @@ const mutation = new GraphQLObjectType({
         project: { type: GraphQLID },
         status: { type: GraphQLString },
         description: { type: GraphQLString },
-        deadLine: { type: GraphQLString }
+        deadLine: { type: GraphQLString },
       },
       resolve(parent, args) {
         return Task.findByIdAndUpdate(
@@ -258,12 +260,12 @@ const mutation = new GraphQLObjectType({
               project: args.project,
               status: args.status,
               description: args.description,
-              deadLine: args.deadLine
-            }
+              deadLine: args.deadLine,
+            },
           },
           { new: true }
         );
-      }
+      },
     },
     deleteProject: {
       type: ProjectType,
@@ -275,7 +277,7 @@ const mutation = new GraphQLObjectType({
           });
           return Project.findByIdAndDelete(args.id);
         });
-      }
+      },
     },
     deleteUser: {
       type: UserType,
@@ -292,19 +294,42 @@ const mutation = new GraphQLObjectType({
           });
           return User.findByIdAndDelete(args.id);
         });
-      }
+      },
     },
     deleteTask: {
       type: TaskType,
       args: { id: { type: new GraphQLNonNull(GraphQLID) } },
       resolve(parent, args) {
         return Task.findByIdAndDelete(args.id);
-      }
-    }
-  }
+      },
+    },
+    login: {
+      type: GraphQLString,
+      description: "login that retrieves a token as string",
+      args: {
+        email: { type: new GraphQLNonNull(GraphQLString) },
+        password: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      async resolve(_, args) {
+        try {
+          const { email, password } = args;
+
+          var user = await User.findOne({ email: email });
+
+          if (user && password === user.password) {
+            return createToken(user);
+          } else {
+            throw new Error("Credenciales incorrectas");
+          }
+        } catch (error) {
+          throw new Error("Error en el login: " + error);
+        }
+      },
+    },
+  },
 });
 
 module.exports = new GraphQLSchema({
   query: RootQuery,
-  mutation
+  mutation,
 });
