@@ -27,5 +27,5 @@ app.use('/graphql', graphqlHTTP({
   schema,
   graphiql: process.env.NODE_ENV === 'development'
 }))
-
+//prueba de permisos
 app.listen(port, console.log(`Server is running on port ${port}`.blue.bold));
