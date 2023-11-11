@@ -34,7 +34,7 @@ const login = {
     name: "LoginResult",
     fields: () => ({
       token: { type: GraphQLString },
-      exiresIn: { type: GraphQLString },
+      expiresIn: { type: GraphQLString },
       message: { type: GraphQLString },
       statusCode: { type: GraphQLInt },
     }),
