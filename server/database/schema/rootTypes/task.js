@@ -77,7 +77,7 @@ const deleteTask = {
   }),
   args: { id: { type: new GraphQLNonNull(GraphQLID) } },
   async resolve(_, args, context) {
-    return await removeTask(args);
+    return await removeTask(args, context);
   },
 };
 
