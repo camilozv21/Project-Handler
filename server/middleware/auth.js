@@ -23,9 +23,15 @@ const validateToken = (req, res, next) => {
   };
 
   const createToken = (data) => {
-    return jwt.sign({ userId: data.id }, secretKey, {
-      expiresIn: "1h",
+    exp= Math.floor(Date.now() / 1000) + ( 24 * 60 * 60)
+    const token = jwt.sign({ userId: data.id }, secretKey, {
+      expiresIn: "24h",
     });
+
+    return {
+      token,
+      exp
+    }
   };
 
   module.exports = { validateToken, createToken };
