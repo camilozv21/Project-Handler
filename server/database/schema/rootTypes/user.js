@@ -9,7 +9,6 @@ const {
 const { UserType } = require("../types");
 const {
   getUserById,
-  getUsers,
   createUser,
   editUser,
   removeUser,
@@ -25,9 +24,8 @@ const user = {
       statusCode: { type: GraphQLInt },
     }),
   }),
-  args: { id: { type: GraphQLID } },
-  async resolve(parent, args) {
-    return await getUserById(args);
+  async resolve(_, args, context) {
+    return await getUserById(context);
   },
 };
 
@@ -36,28 +34,14 @@ const login = {
     name: "LoginResult",
     fields: () => ({
       token: { type: GraphQLString },
-      exiresIn: { type: GraphQLInt },
+      exiresIn: { type: GraphQLString },
       message: { type: GraphQLString },
       statusCode: { type: GraphQLInt },
     }),
   }),
   args: { email: { type: GraphQLString }, password: { type: GraphQLString } },
-  async resolve(parent, args) {
+  async resolve(_, args) {
     return await userlogin(args);
-  },
-};
-
-const users = {
-  type: new GraphQLObjectType({
-    name: "UsersResult",
-    fields: () => ({
-      users: { type: new GraphQLList(UserType) },
-      message: { type: GraphQLString },
-      statusCode: { type: GraphQLInt },
-    }),
-  }),
-  async resolve(parent, args) {
-    return await getUsers();
   },
 };
 
@@ -77,7 +61,7 @@ const addUser = {
     password: { type: new GraphQLNonNull(GraphQLString) },
     image: { type: GraphQLString },
   },
-  async resolve(parent, args) {
+  async resolve(_, args) {
     return await createUser(args);
   },
 };
@@ -92,15 +76,12 @@ const updateUser = {
     }),
   }),
   args: {
-    id: { type: new GraphQLNonNull(GraphQLID) },
     name: { type: GraphQLString },
     lastname: { type: GraphQLString },
-    email: { type: GraphQLString },
-    password: { type: GraphQLString },
     image: { type: GraphQLString },
   },
-  async resolve(parent, args) {
-    return await editUser(args);
+  async resolve(_, args, context) {
+    return await editUser(args, context);
   },
 };
 
@@ -113,16 +94,14 @@ const deleteUser = {
       statusCode: { type: GraphQLInt },
     }),
   }),
-  args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-  async resolve(parent, args) {
-    return await removeUser(args);
+  async resolve(_, args) {
+    return await removeUser(args, context);
   },
 };
 
 
 module.exports = {
   user,
-  users,
   addUser,
   updateUser,
   deleteUser,

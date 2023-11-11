@@ -1,11 +1,16 @@
 const User = require("../models/User");
 const { removeManyProjects } = require("./projectController");
 const bcrypt = require("bcrypt");
-const { createToken } = require("../../middleware/auth");
+const { createToken, validateUser } = require("../../middleware/auth");
 
-const getUserById = async (args) => {
+const getUserById = async (context) => {
   try {
-    let user = await User.findById(args.id);
+    
+    let validatedUser = validateUser(context.user);
+
+    if (validatedUser.statusCode !== 200) return validatedUser;
+
+    let user = await User.findById(validatedUser.userId);
 
     if (user) {
       return {
@@ -17,20 +22,6 @@ const getUserById = async (args) => {
         message: "usuario no encontrado",
         statusCode: 404,
       };
-  } catch (error) {
-    return {
-      message: error.message,
-      statusCode: 500,
-    };
-  }
-};
-
-const getUsers = async () => {
-  try {
-    return {
-      users: await User.find(),
-      statusCode: 200,
-    };
   } catch (error) {
     return {
       message: error.message,
@@ -68,10 +59,13 @@ const createUser = async (args) => {
   }
 };
 
-const editUser = async (args) => {
+const editUser = async (args, context) => {
   try {
+    let validatedUser = validateUser(context.user);
+    if (validatedUser.statusCode !== 200) return validatedUser;
+
     let user = await User.findByIdAndUpdate(
-      args.id,
+      validatedUser.userId,
       {
         $set: {
           name: args.name,
@@ -101,10 +95,13 @@ const editUser = async (args) => {
   }
 };
 
-const removeUser = async (args) => {
+const removeUser = async (context) => {
   try {
-    let userId = args.id;
-    let user = await User.findById(userId);
+    let validatedUser = validateUser(context.user);
+
+    if (validatedUser.statusCode !== 200) return validatedUser;
+
+    let user = await User.findById(validatedUser.userId);
 
     if (!user) {
       return {
@@ -186,7 +183,6 @@ const userlogin = async (args) => {
 };
 
 module.exports = {
-  getUsers,
   getUserById,
   createUser,
   editUser,
