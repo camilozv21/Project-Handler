@@ -7,8 +7,13 @@ const {
   GraphQLNonNull,
 } = require("graphql");
 const { ProjectType } = require("../types");
-const { getProjectById, getProjects, createProject, editProject, removeProject } = require("../../controllers/projectController");
-
+const {
+  getProjectById,
+  getProjects,
+  createProject,
+  editProject,
+  removeProject,
+} = require("../../controllers/projectController");
 
 const project = {
   type: new GraphQLObjectType({
@@ -20,8 +25,8 @@ const project = {
     }),
   }),
   args: { projectId: { type: GraphQLID } },
-  async resolve(_, args) {
-    return await getProjectById(args)
+  async resolve(_, args, context) {
+    return await getProjectById(args, context);
   },
 };
 
@@ -34,8 +39,8 @@ const projects = {
       statusCode: { type: GraphQLInt },
     }),
   }),
-  async resolve(_, args) {
-    return await getProjects(args)
+  async resolve(_, args, context) {
+    return await getProjects(context);
   },
 };
 
@@ -51,10 +56,9 @@ const addProject = {
   args: {
     name: { type: new GraphQLNonNull(GraphQLString) },
     image: { type: GraphQLString },
-    userId: { type: new GraphQLNonNull(GraphQLID) },
   },
-  async resolve(_, args) {
-    return await createProject(args);
+  async resolve(_, args, context) {
+    return await createProject(args, context);
   },
 };
 
@@ -72,8 +76,8 @@ const updateProject = {
     name: { type: GraphQLString },
     image: { type: GraphQLString },
   },
-  async resolve(_, args) {
-    return await editProject(args);
+  async resolve(_, args, context) {
+    return await editProject(args, context);
   },
 };
 
@@ -87,8 +91,8 @@ const deleteProject = {
     }),
   }),
   args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-  async resolve(_, args) {
-    return await removeProject(args);
+  async resolve(_, args, context) {
+    return await removeProject(args, context);
   },
 };
 

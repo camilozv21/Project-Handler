@@ -1,9 +1,14 @@
 const Project = require("../models/Project");
 const User = require("../models/User");
 const { removeManyTasks } = require("./taskController");
+const { validateUser } = require("../../middleware/auth");
 
-const getProjectById = async (args) => {
+const getProjectById = async (args, context) => {
   try {
+    let validatedUser = validateUser(context.user);
+
+    if (validatedUser.statusCode !== 200) return validatedUser;
+
     let project = await Project.findById(args.id);
 
     if (project) {
@@ -24,14 +29,13 @@ const getProjectById = async (args) => {
   }
 };
 
-const getProjects = async (args) => {
+const getProjects = async (context) => {
   try {
-    let projects = {};
-    if (args.userId) {
-      projects = await Project.find({ userId: args.userId });
-    } else {
-      projects = await Project.find({});
-    }
+    let validatedUser = validateUser(context.user);
+
+    if (validatedUser.statusCode !== 200) return validatedUser;
+
+    let projects = await Project.find({ userId: validatedUser.userId });
 
     if (projects) {
       return {
@@ -40,7 +44,7 @@ const getProjects = async (args) => {
       };
     } else
       return {
-        message: "proyecto no encontrado",
+        message: "No se encontraron proyectos",
         statusCode: 404,
       };
   } catch (error) {
@@ -51,9 +55,13 @@ const getProjects = async (args) => {
   }
 };
 
-const createProject = async (args) => {
+const createProject = async (args, context) => {
   try {
-    const user = await User.findById(args.userId);
+    let validatedUser = validateUser(context.user);
+
+    if (validatedUser.statusCode !== 200) return validatedUser;
+
+    const user = await User.findById(validatedUser.userId);
 
     if (!user) {
       return {
@@ -65,7 +73,7 @@ const createProject = async (args) => {
     let project = new Project({
       name: args.name,
       image: args.image,
-      userId: args.userId,
+      userId: user.userId,
     });
 
     const newProject = await project.save();
@@ -84,8 +92,13 @@ const createProject = async (args) => {
   }
 };
 
-const editProject = async (args) => {
+const editProject = async (args, context) => {
   try {
+
+    let validatedUser = validateUser(context.user);
+
+    if (validatedUser.statusCode !== 200) return validatedUser;
+    
     let project = await Project.findByIdAndUpdate(
       args.id,
       {
@@ -116,8 +129,12 @@ const editProject = async (args) => {
   }
 };
 
-const removeProject = async (args) => {
+const removeProject = async (args, context) => {
   try {
+    let validatedUser = validateUser(context.user);
+
+    if (validatedUser.statusCode !== 200) return validatedUser;
+    
     let project = await Project.findById(args.id);
 
     if (!project) {
