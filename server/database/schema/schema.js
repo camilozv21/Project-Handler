@@ -16,7 +16,6 @@ const {
 
 const {
   task,
-  tasks,
   addTask,
   updateTask,
   deleteTask,
@@ -31,7 +30,6 @@ const RootQuery = new GraphQLObjectType({
     projects,
     user,
     task,
-    tasks
   },
 });
 

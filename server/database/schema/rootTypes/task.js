@@ -7,7 +7,7 @@ const {
   GraphQLNonNull,
 } = require("graphql");
 const { TaskType } = require("../types");
-const { getTaskById, getTasks, createTask, editTask, removeTask } = require("../../controllers/taskController");
+const { getTaskById, createTask, editTask, removeTask } = require("../../controllers/taskController");
 
 const task = {
   type: new GraphQLObjectType({
@@ -19,22 +19,8 @@ const task = {
     }),
   }),
   args: { id: { type: GraphQLID } },
-  async resolve(_, args) {
-    return await getTaskById(args);
-  },
-};
-
-const tasks = {
-  type: new GraphQLObjectType({
-    name: "TasksResult",
-    fields: () => ({
-      tasks: { type: new GraphQLList(TaskType) },
-      message: { type: GraphQLString },
-      statusCode: { type: GraphQLInt },
-    }),
-  }),
-  async resolve(_, args) {
-    return await getTasks();
+  async resolve(_, args, context) {
+    return await getTaskById(args, context);
   },
 };
 
@@ -53,10 +39,9 @@ const addTask = {
     status: { type: new GraphQLNonNull(GraphQLString) },
     description: { type: new GraphQLNonNull(GraphQLString) },
     deadLine: { type: new GraphQLNonNull(GraphQLString) },
-    userId: { type: new GraphQLNonNull(GraphQLID) },
   },
-  async resolve(_, args) {
-    return await createTask(args);
+  async resolve(_, args, context) {
+    return await createTask(args, context);
   },
 };
 
@@ -77,8 +62,8 @@ const updateTask = {
     description: { type: GraphQLString },
     deadLine: { type: GraphQLString },
   },
-  async resolve(_, args) {
-    return await editTask(args)
+  async resolve(_, args, context) {
+    return await editTask(args, context)
   },
 };
 
@@ -92,14 +77,13 @@ const deleteTask = {
     }),
   }),
   args: { id: { type: new GraphQLNonNull(GraphQLID) } },
-  async resolve(_, args) {
+  async resolve(_, args, context) {
     return await removeTask(args);
   },
 };
 
 module.exports = {
   task,
-  tasks,
   addTask,
   updateTask,
   deleteTask,

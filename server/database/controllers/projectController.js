@@ -73,7 +73,7 @@ const createProject = async (args, context) => {
     let project = new Project({
       name: args.name,
       image: args.image,
-      userId: user.userId,
+      userId: user._id,
     });
 
     const newProject = await project.save();

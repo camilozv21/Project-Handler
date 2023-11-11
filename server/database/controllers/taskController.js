@@ -1,7 +1,11 @@
 const Task = require("../models/Task");
 
-const getTaskById = async (args) => {
+const getTaskById = async (args, context) => {
   try {
+    let validatedUser = validateUser(context.user);
+
+    if (validatedUser.statusCode !== 200) return validatedUser;
+
     let task = await Task.findById(args.id);
 
     if (task) {
@@ -22,22 +26,12 @@ const getTaskById = async (args) => {
   }
 };
 
-const getTasks = async (args) => {
+const createTask = async (args, context) => {
   try {
-    return {
-      tasks: await Task.find(),
-      statusCode: 200,
-    };
-  } catch (error) {
-    return {
-      message: error.message,
-      statusCode: 500,
-    };
-  }
-};
+    let validatedUser = validateUser(context.user);
 
-const createTask = async (args) => {
-  try {
+    if (validatedUser.statusCode !== 200) return validatedUser;
+
     const project = await Project.findById(args.projectId);
 
     if (!project) {
@@ -47,7 +41,7 @@ const createTask = async (args) => {
       };
     }
 
-    const user = await User.findById(args.userId);
+    const user = await User.findById(validatedUser.userId);
 
     if (!user) {
       return {
@@ -59,7 +53,7 @@ const createTask = async (args) => {
     let task = new Task({
       name: args.name,
       image: args.image,
-      userId: args.userId,
+      userId: user._id,
     });
 
     const newTask = await task.save();
@@ -78,8 +72,12 @@ const createTask = async (args) => {
   }
 };
 
-const editTask = async (args) => {
+const editTask = async (args, context) => {
   try {
+    let validatedUser = validateUser(context.user);
+
+    if (validatedUser.statusCode !== 200) return validatedUser;
+
     let task = await Task.findByIdAndUpdate(
       args.id,
       {
@@ -113,8 +111,12 @@ const editTask = async (args) => {
   }
 };
 
-const removeTask = async (args) => {
+const removeTask = async (args, context) => {
   try {
+    let validatedUser = validateUser(context.user);
+
+    if (validatedUser.statusCode !== 200) return validatedUser;
+
     let task = await Task.findById(args.id);
 
     if (!task) {
@@ -147,4 +149,4 @@ const removeManyTasks = async (projectIds) => {
   }
 };
 
-module.exports = { getTasks, getTaskById, createTask, editTask, removeTask, removeManyTasks };
+module.exports = { getTaskById, createTask, editTask, removeTask, removeManyTasks };
