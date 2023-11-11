@@ -140,7 +140,7 @@ const removeTask = async (args, context) => {
 
 const removeManyTasks = async (projectIds) => {
   try {
-    await Task.deleteMany({ projectId: { $in: projectIdList } });
+    await Task.deleteMany({ projectId: { $in: projectIds } });
   } catch (error) {
     throw new Error({
       message: "Error al eliminar las tareas",

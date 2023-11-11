@@ -94,8 +94,8 @@ const deleteUser = {
       statusCode: { type: GraphQLInt },
     }),
   }),
-  async resolve(_, args) {
-    return await removeUser(args, context);
+  async resolve(_, args, context) {
+    return await removeUser(context);
   },
 };
 

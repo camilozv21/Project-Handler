@@ -100,7 +100,6 @@ const removeUser = async (context) => {
     let validatedUser = validateUser(context.user);
 
     if (validatedUser.statusCode !== 200) return validatedUser;
-
     let user = await User.findById(validatedUser.userId);
 
     if (!user) {
