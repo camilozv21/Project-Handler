@@ -163,9 +163,9 @@ const userlogin = async (args) => {
     const { email, password } = args;
 
     var user = await User.findOne({ email: email });
-    var jwtResponse = await createToken(user);
 
     if (user && bcrypt.compareSync(password, user.password)) {
+      var jwtResponse = await createToken(user);
       return {
         statusCode: 200,
         token: jwtResponse.token,
