@@ -1,4 +1,7 @@
 const Task = require("../models/Task");
+const Project = require("../models/Project");
+const User = require("../models/User");
+const { validateUser } = require("../../middleware/auth");
 
 const getTaskById = async (args, context) => {
   try {
@@ -53,13 +56,15 @@ const createTask = async (args, context) => {
     let task = new Task({
       name: args.name,
       image: args.image,
+      description: args.description,
+      deadLine: args.deadLine,
       userId: user._id,
     });
 
     const newTask = await task.save();
     project.tasks.push(newTask.id);
     await project.save();
-
+    
     return {
       task: newTask,
       statusCode: 200,

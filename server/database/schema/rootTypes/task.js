@@ -36,7 +36,6 @@ const addTask = {
   args: {
     name: { type: new GraphQLNonNull(GraphQLString) },
     projectId: { type: new GraphQLNonNull(GraphQLID) },
-    status: { type: new GraphQLNonNull(GraphQLString) },
     description: { type: new GraphQLNonNull(GraphQLString) },
     deadLine: { type: new GraphQLNonNull(GraphQLString) },
   },

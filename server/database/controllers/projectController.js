@@ -9,7 +9,7 @@ const getProjectById = async (args, context) => {
 
     if (validatedUser.statusCode !== 200) return validatedUser;
 
-    let project = await Project.findById(args.id);
+    let project = await Project.findById(args.projectId);
 
     if (project) {
       return {
