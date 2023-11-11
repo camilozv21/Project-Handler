@@ -112,7 +112,7 @@ const removeUser = async (context) => {
     await removeManyProjects(user.projectId);
 
     return {
-      user: await User.findByIdAndDelete(userId),
+      user: await User.findByIdAndDelete(user._id),
       statusCode: 200,
     };
   } catch (error) {
