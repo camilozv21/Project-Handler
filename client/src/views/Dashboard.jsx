@@ -5,13 +5,13 @@ export const Dashboard = () => {
   return (
     <div className="flex h-screen">
       <Resizable
-        className="bg-gray-200"
+        className="bg-gray-200 shadow border-r-2 border-blue-200 md:max-w-xs"
         defaultSize={{
           width: 200,
           height: '100%',
         }}
-        minWidth={50}
-        maxWidth={500}
+        minWidth={100}
+        maxWidth={300}
         enable={{ top: false, right: true, bottom: false, left: false, topRight: false, bottomRight: false, bottomLeft: false, topLeft: false }}
       >
         <p>Sidebar</p>
