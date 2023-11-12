@@ -3,6 +3,8 @@ import { Home } from "./views/Home";
 import { NavigationBar } from "./components/NavigationBar";
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from "@apollo/client";
 import { setContext } from '@apollo/client/link/context';
+import { Dashboard } from "./views/Dashboard";
+import NotFound from "./views/NotFound";
 
 const httpLink = createHttpLink({
   uri: "http://localhost:5000/graphql",
@@ -30,6 +32,8 @@ function App() {
         <NavigationBar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/dashboard/:id" element={<Dashboard />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </ApolloProvider>
