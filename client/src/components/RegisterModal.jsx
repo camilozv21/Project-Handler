@@ -33,6 +33,9 @@ export const RegisterModal = (props) => {
         },
       });
       console.log(result.data);
+      if (result.data) {
+        props.onHide();
+      }
     } catch (error) {
       console.error("Error en la mutación:", error.message);
     }
