@@ -11,4 +11,13 @@ const LOGIN_MUTATION = gql`
   }
 `;
 
-export { LOGIN_MUTATION };
+const REGISTER_MUTATION = gql`
+  mutation Register($name: String!, $lastname: String!, $email: String!, $password: String!, $image: String!) {
+    addUser(name: $name, lastname: $lastname, email: $email, password: $password, image: $image) {
+      statusCode
+      message
+    }
+  }
+`;
+
+export { LOGIN_MUTATION, REGISTER_MUTATION };
