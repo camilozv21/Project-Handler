@@ -165,7 +165,7 @@ const userlogin = async (args) => {
       return {
         statusCode: 200,
         token: jwtResponse.token,
-        exiresIn: jwtResponse.exp,
+        expiresIn: jwtResponse.exp,
       };
     } else {
       return {
