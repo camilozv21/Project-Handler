@@ -13,7 +13,7 @@ const LOGIN_MUTATION = gql`
 
 const REGISTER_MUTATION = gql`
   mutation Register($name: String!, $lastname: String!, $email: String!, $password: String!, $image: String!) {
-    register(name: $name, lastname: $lastname, email: $email, password: $password, image: $image) {
+    addUser(name: $name, lastname: $lastname, email: $email, password: $password, image: $image) {
       statusCode
       message
     }
