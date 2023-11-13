@@ -5,7 +5,7 @@ export const Dashboard = () => {
   return (
     <div className="flex h-screen">
       <Resizable
-        className="bg-gray-200 shadow border-r-2 border-blue-200 md:max-w-xs"
+        className="bg-gray-200 shadow border-r-4 hover:border-blue-200 transition-all 0.2s md:max-w-xs"
         defaultSize={{
           width: 200,
           height: '100%',
