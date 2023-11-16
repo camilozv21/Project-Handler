@@ -7,7 +7,7 @@ import { Dashboard } from "./views/Dashboard";
 import NotFound from "./views/NotFound";
 
 const httpLink = createHttpLink({
-  uri: "http://localhost:5000/graphql",
+  uri: "https://project-handler-jvl7.vercel.app/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
