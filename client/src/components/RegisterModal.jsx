@@ -2,7 +2,7 @@ import Modal from "react-bootstrap/Modal";
 import { useState } from "react";
 import imgDefault from "./assets/default.png";
 import { useMutation } from "@apollo/client";
-import { REGISTER_MUTATION } from "../graphql/mutations";
+import { REGISTER_MUTATION } from "../graphql/userMutations";
 
 export const RegisterModal = (props) => {
   const [name, setName] = useState("");
