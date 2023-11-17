@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { LOGIN_MUTATION } from "../graphql/mutations";
 import { useMutation } from '@apollo/client';
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from 'jwt-decode';
+// import { jwtDecode } from 'jwt-decode';
 
 export const LoginModal = (props) => {
   const [email, setEmail] = useState("");
@@ -24,8 +24,8 @@ export const LoginModal = (props) => {
       if (!result.error && result.data.login.statusCode === 200) {
         localStorage.setItem('token', result.data.login.token);
         localStorage.setItem('exp', result.data.login.expiresIn);
-        const decoded = jwtDecode(result.data.login.token);
-        navigate(`/dashboard/${decoded.userId}`);
+        // const decoded = jwtDecode(result.data.login.token);
+        navigate(`/dashboard`); // Retirar el id del usuario
       }
       else {
         if (result.errors && result.errors.length > 0) {
