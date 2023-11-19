@@ -9,8 +9,7 @@ export const CreateProjectModal = (props) => {
   const [addProjectMutation, { loading, error, data }] = useMutation(ADD_PROJECT_MUTATION);
 
   const handleFileUpload = (e) => {
-    console.log(e.target.files[0])
-    setImg(e.target.files[0]);
+    setImg(e.target.files[0].name);
   }
 
   const handleAddProject = async (e) => {
@@ -53,7 +52,7 @@ export const CreateProjectModal = (props) => {
               htmlFor="file"
               className="flex items-center justify-center relative h-24 w-24 bg-blue-500 rounded-full p-2 cursor-pointer"
             >
-              <span className="absolute z-20 font-semibold text-center text-white inset-0 rounded-full flex items-center justify-center bg-blue-700 opacity-5 hover:opacity-100 transition-opacity ">
+              <span className="absolute z-20 font-semibold text-center text-white inset-0 rounded-full flex items-center justify-center bg-blue-700">
                 Subir
                 <br />
                 Imagen
