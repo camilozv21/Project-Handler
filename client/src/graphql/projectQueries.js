@@ -23,7 +23,6 @@ const GET_PROJECT_QUERY = gql`
         tasks {
           id
           name
-          image
           description
           deadLine
           status
