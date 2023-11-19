@@ -3,9 +3,11 @@ import { Home } from "./views/Home";
 import { NavigationBar } from "./components/NavigationBar";
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from "@apollo/client";
 import { setContext } from '@apollo/client/link/context';
+import { Dashboard } from "./views/Dashboard";
+import NotFound from "./views/NotFound";
 
 const httpLink = createHttpLink({
-  uri: "http://localhost:5000/graphql",
+  uri: "https://project-handler-jvl7.vercel.app/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -17,6 +19,7 @@ const authLink = setContext((_, { headers }) => {
     },
   };
 });
+
 
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
@@ -30,6 +33,8 @@ function App() {
         <NavigationBar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </ApolloProvider>
