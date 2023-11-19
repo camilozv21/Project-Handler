@@ -21,7 +21,7 @@ export const CreateProjectModal = (props) => {
           image: img,
         },
       });
-      console.log(result.data);
+
       if (result.data) {
         props.onHide();
       }
