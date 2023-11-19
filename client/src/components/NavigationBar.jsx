@@ -12,7 +12,7 @@ export const NavigationBar = () => {
 
   const token = localStorage.getItem('token')
   const decoded = token ? jwtDecode(token) : null;
-  const url = decoded ? `/dashboard/${decoded.userId}` : '/';
+  const url = decoded ? `/dashboard` : '/';
 
   return (
     <header className='w-full sticky'>
