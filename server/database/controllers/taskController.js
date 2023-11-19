@@ -55,7 +55,6 @@ const createTask = async (args, context) => {
 
     let task = new Task({
       name: args.name,
-      image: args.image,
       description: args.description,
       deadLine: args.deadLine,
       userId: user._id,
