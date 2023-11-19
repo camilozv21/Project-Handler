@@ -1,3 +1,4 @@
+const fs = require("fs");
 const User = require("../models/User");
 const { removeManyProjects } = require("./projectController");
 const bcrypt = require("bcrypt");
@@ -5,7 +6,6 @@ const { createToken, validateUser } = require("../../middleware/auth");
 
 const getUserById = async (context) => {
   try {
-    
     let validatedUser = validateUser(context.user);
 
     if (validatedUser.statusCode !== 200) return validatedUser;
@@ -30,18 +30,30 @@ const getUserById = async (context) => {
   }
 };
 
-const createUser = async (args) => {
+const createUser = async (args, context) => {
   try {
-    let user = new User({
+    let imageName = `user_${Date.now()}.jpg`;
+
+    let newUser = new User({
       name: args.name,
       lastname: args.lastname,
       email: args.email,
       password: await bcrypt.hash(args.password, 10),
-      image: args.image,
+      image: imageName,
     });
 
+    let user = await newUser.save();
+
+    if (context.file) {
+      if (!fs.existsSync("./uploads")) {
+        fs.mkdirSync("./uploads");
+      }
+      console.log();
+      fs.writeFileSync(`./uploads/${imageName}`, context.file.buffer);
+    }
+
     return {
-      user: await user.save(),
+      user: user,
       statusCode: 200,
     };
   } catch (error) {
