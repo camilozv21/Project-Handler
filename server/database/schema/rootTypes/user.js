@@ -61,8 +61,8 @@ const addUser = {
     password: { type: new GraphQLNonNull(GraphQLString) },
     image: { type: GraphQLString },
   },
-  async resolve(_, args) {
-    return await createUser(args);
+  async resolve(_, args, context) {
+    return await createUser(args, context);
   },
 };
 
