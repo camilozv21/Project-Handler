@@ -10,7 +10,7 @@ export const ShowProjects = () => {
   return (
     <>
       {data.projects.projects.map((project) => (
-        <div key={project.name} className="flex flex-row items-center gap-2">
+        <div key={project.name} className="flex flex-row items-center gap-2 cursor-pointer">
           <img src={project.image} alt={project.name} className="h-14 w-14 rounded-full" />
           <p className="text-center mb-0">{project.name}</p>
         </div>
