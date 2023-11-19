@@ -21,7 +21,7 @@ export const Dashboard = () => {
           width: 200,
           height: '100%',
         }}
-        minWidth={140}
+        minWidth={85}
         maxWidth={300}
         enable={{ top: false, right: true, bottom: false, left: false, topRight: false, bottomRight: false, bottomLeft: false, topLeft: false }}
       >
