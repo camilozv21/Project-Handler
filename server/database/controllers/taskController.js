@@ -58,13 +58,13 @@ const createTask = async (args, context) => {
       description: args.description,
       deadLine: args.deadLine,
       userId: user._id,
-      projectId:project._id,
+      projectId: project._id,
     });
 
     const newTask = await task.save();
     project.tasks.push(newTask.id);
     await project.save();
-    
+
     return {
       task: newTask,
       statusCode: 200,
