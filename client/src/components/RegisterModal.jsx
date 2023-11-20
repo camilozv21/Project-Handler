@@ -12,15 +12,9 @@ export const RegisterModal = (props) => {
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
-  const [registerMutation, { loading, error, data }] =
-    useMutation(REGISTER_MUTATION);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    console.log(file)
-    console.log(e.target.files)
-    console.log(e.target.value)
-    console.log(URL.createObjectURL(file))
     setImg(file);
   };
 
@@ -82,6 +76,8 @@ export const RegisterModal = (props) => {
               id="file"
               className="hidden"
               onChange={handleImageChange}
+              multiple="false"
+              accept="image/*"
             />
             <label
               htmlFor="file"
