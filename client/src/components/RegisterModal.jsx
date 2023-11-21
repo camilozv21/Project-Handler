@@ -18,6 +18,16 @@ export const RegisterModal = (props) => {
     setImg(file);
   };
 
+  const handleClose = () => {
+    setImg(null);
+    setEmail("");
+    setLastName("");
+    setName("");
+    setPassword1("");
+    setPassword2("");
+    props.onHide(); 
+  };
+
   const handleRegister = async (e) => {
     try {
       e.preventDefault();
@@ -28,7 +38,9 @@ export const RegisterModal = (props) => {
         setErrorPassword("");
       }
       const formData = new FormData();
-      formData.append('query', `
+      formData.append(
+        "query",
+        `
         mutation {
           addUser(
             name: "${name}",
@@ -41,18 +53,19 @@ export const RegisterModal = (props) => {
             statusCode
           }
         }
-      `);
-      formData.append('image', img);
+      `
+      );
+      formData.append("image", img);
 
-      const response = await fetch('http://localhost:5000/graphql', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5000/graphql", {
+        method: "POST",
         body: formData,
       });
       let result = await response.json();
-      setImg(null);
+
       console.log(result);
       if (result.data) {
-        props.onHide();
+        handleClose();
       }
     } catch (error) {
       console.error("Error en la mutación:", error.message);
@@ -61,7 +74,7 @@ export const RegisterModal = (props) => {
 
   return (
     <>
-      <Modal {...props} size="md">
+      <Modal {...props} onHide={handleClose} size="md">
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
             Registrarse
