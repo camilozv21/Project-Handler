@@ -9,10 +9,15 @@ const connectDB = require("./database/config/db");
 const { graphqlHTTP } = require("express-graphql");
 const schema = require("./database/schema/schema");
 const { validateToken } = require("./middleware/auth");
+const multer = require("multer");
+const path = require('path');
 
 const app = express();
 
 connectDB();
+
+const uploadsFolder = path.join(__dirname, 'uploads');
+app.use('/uploads', express.static(uploadsFolder));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -27,8 +32,12 @@ app.use(cookieParser());
 app.use(cors());
 app.use(validateToken);
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
 app.use(
   "/graphql",
+  upload.single("image"), 
   graphqlHTTP({
     schema,
     graphiql: process.env.NODE_ENV === "development",

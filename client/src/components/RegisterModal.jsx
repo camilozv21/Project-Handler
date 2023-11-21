@@ -8,41 +8,73 @@ export const RegisterModal = (props) => {
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [img, setImg] = useState("");
+  const [img, setImg] = useState(null);
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
-  const [registerMutation, { loading, error, data }] = useMutation(REGISTER_MUTATION);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImg(file);
+  };
+
+  const handleClose = () => {
+    setImg(null);
+    setEmail("");
+    setLastName("");
+    setName("");
+    setPassword1("");
+    setPassword2("");
+    props.onHide();
+  };
 
   const handleRegister = async (e) => {
     try {
       e.preventDefault();
       if (password1 !== password2) {
-        setErrorPassword('Las contraseñas no coinciden')
+        setErrorPassword("Las contraseñas no coinciden");
         return;
       } else {
-        setErrorPassword('')
+        setErrorPassword("");
       }
-      const result = await registerMutation({
-        variables: {
-          name: name,
-          lastname: lastName,
-          email: email,
-          image: img,
-          password: password1,
-        },
+      const formData = new FormData();
+      formData.append(
+        "query",
+        `
+        mutation {
+          addUser(
+            name: "${name}",
+            lastname: "${lastName}",
+            email: "${email}",
+            password: "${password1}",
+            image: ""
+          ) {
+            message
+            statusCode
+          }
+        }
+      `
+      );
+      formData.append("image", img);
+
+      const response = await fetch("http://localhost:5000/graphql", {
+        method: "POST",
+        body: formData,
       });
+      let result = await response.json();
+
+      console.log(result);
       if (result.data) {
-        props.onHide();
+        handleClose();
       }
     } catch (error) {
       console.error("Error en la mutación:", error.message);
     }
-  }
+  };
 
   return (
     <>
-      <Modal {...props} size="md">
+      <Modal {...props} onHide={handleClose} size="md">
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
             Registrarse
@@ -57,14 +89,18 @@ export const RegisterModal = (props) => {
               type="file"
               id="file"
               className="hidden"
-              value={img}
-              onChange={(e) => setImg(e.target.value)}
+              onChange={handleImageChange}
+              multiple={false}
+              accept="image/*"
             />
             <label
               htmlFor="file"
               className="flex items-center justify-center relative h-24 w-24 bg-blue-500 rounded-full p-2 cursor-pointer"
             >
-              <img src={imgDefault} alt="usuario default" />
+              <img
+                src={img ? URL.createObjectURL(img) : imgDefault}
+                alt="usuario default"
+              />
               <span className="absolute z-20 font-semibold text-center text-white inset-0 rounded-full flex items-center justify-center bg-blue-700 opacity-5 hover:opacity-100 transition-opacity ">
                 Subir
                 <br />
@@ -92,18 +128,24 @@ export const RegisterModal = (props) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            {errorPassword && <p className="text-red-500 mb-0 ">¡Las contraseñas no coinciden!</p>}
+            {errorPassword && (
+              <p className="text-red-500 mb-0 ">
+                ¡Las contraseñas no coinciden!
+              </p>
+            )}
             <input
               type="password"
               placeholder="Contraseña"
-              className={`border-2 border-gray-400 rounded-md p-2 m-2 w-80 ${errorPassword ? 'border-red-500' : ''}`}
+              className={`border-2 border-gray-400 rounded-md p-2 m-2 w-80 ${errorPassword ? "border-red-500" : ""
+                }`}
               value={password1}
               onChange={(e) => setPassword1(e.target.value)}
             />
             <input
               type="password"
               placeholder="Confirmar contraseña"
-              className={`border-2 border-gray-400 rounded-md p-2 m-2 w-80 ${errorPassword ? 'border-red-500' : ''}`}
+              className={`border-2 border-gray-400 rounded-md p-2 m-2 w-80 ${errorPassword ? "border-red-500" : ""
+                }`}
               value={password2}
               onChange={(e) => setPassword2(e.target.value)}
             />

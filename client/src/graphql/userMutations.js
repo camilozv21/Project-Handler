@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 const LOGIN_MUTATION = gql`
   mutation Login($email: String!, $password: String!) {
@@ -12,8 +12,20 @@ const LOGIN_MUTATION = gql`
 `;
 
 const REGISTER_MUTATION = gql`
-  mutation Register($name: String!, $lastname: String!, $email: String!, $password: String!, $image: String!) {
-    addUser(name: $name, lastname: $lastname, email: $email, password: $password, image: $image) {
+  mutation Register(
+    $name: String!
+    $lastname: String!
+    $email: String!
+    $password: String!
+    $image: Upload
+  ) {
+    addUser(
+      name: $name
+      lastname: $lastname
+      email: $email
+      password: $password
+      image: $image
+    ) {
       statusCode
       message
     }
