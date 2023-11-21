@@ -10,10 +10,14 @@ const { graphqlHTTP } = require("express-graphql");
 const schema = require("./database/schema/schema");
 const { validateToken } = require("./middleware/auth");
 const multer = require("multer");
+const path = require('path');
 
 const app = express();
 
 connectDB();
+
+const uploadsFolder = path.join(__dirname, 'uploads');
+app.use('/uploads', express.static(uploadsFolder));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());

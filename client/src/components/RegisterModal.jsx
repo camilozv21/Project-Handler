@@ -49,6 +49,7 @@ export const RegisterModal = (props) => {
         body: formData,
       });
       let result = await response.json();
+      setImg(null);
       console.log(result);
       if (result.data) {
         props.onHide();
@@ -76,7 +77,7 @@ export const RegisterModal = (props) => {
               id="file"
               className="hidden"
               onChange={handleImageChange}
-              multiple="false"
+              multiple={false}
               accept="image/*"
             />
             <label

@@ -3,6 +3,7 @@ const User = require("../models/User");
 const { removeManyProjects } = require("./projectController");
 const bcrypt = require("bcrypt");
 const { createToken, validateUser } = require("../../middleware/auth");
+require("dotenv").config();
 
 const getUserById = async (context) => {
   try {
@@ -39,17 +40,17 @@ const createUser = async (args, context) => {
       lastname: args.lastname,
       email: args.email,
       password: await bcrypt.hash(args.password, 10),
-      image: imageName,
+      image: `${process.env["API_URL"]}uploads/${imageName}`,
     });
 
     let user = await newUser.save();
 
     if (context.file) {
-      if (!fs.existsSync("./uploads")) {
-        fs.mkdirSync("./uploads");
+      if (!fs.existsSync("./server/uploads")) {
+        fs.mkdirSync("./server/uploads");
       }
       console.log();
-      fs.writeFileSync(`./uploads/${imageName}`, context.file.buffer);
+      fs.writeFileSync(`./server/uploads/${imageName}`, context.file.buffer);
     }
 
     return {
