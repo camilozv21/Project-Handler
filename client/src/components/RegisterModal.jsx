@@ -1,6 +1,6 @@
 import Modal from "react-bootstrap/Modal";
 import { useState } from "react";
-import imgDefault from "./assets/default.png";
+import imgDefault from "./assets/default123.png";
 import { useMutation } from "@apollo/client";
 import { REGISTER_MUTATION } from "../graphql/userMutations";
 
