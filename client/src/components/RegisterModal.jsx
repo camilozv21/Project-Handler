@@ -25,7 +25,7 @@ export const RegisterModal = (props) => {
     setName("");
     setPassword1("");
     setPassword2("");
-    props.onHide(); 
+    props.onHide();
   };
 
   const handleRegister = async (e) => {
@@ -57,7 +57,7 @@ export const RegisterModal = (props) => {
       );
       formData.append("image", img);
 
-      const response = await fetch("http://localhost:5000/graphql", {
+      const response = await fetch("https://project-handler-jvl7.vercel.app/graphql", {
         method: "POST",
         body: formData,
       });
@@ -136,25 +136,23 @@ export const RegisterModal = (props) => {
             <input
               type="password"
               placeholder="Contraseña"
-              className={`border-2 border-gray-400 rounded-md p-2 m-2 w-80 ${
-                errorPassword ? "border-red-500" : ""
-              }`}
+              className={`border-2 border-gray-400 rounded-md p-2 m-2 w-80 ${errorPassword ? "border-red-500" : ""
+                }`}
               value={password1}
               onChange={(e) => setPassword1(e.target.value)}
             />
             <input
               type="password"
               placeholder="Confirmar contraseña"
-              className={`border-2 border-gray-400 rounded-md p-2 m-2 w-80 ${
-                errorPassword ? "border-red-500" : ""
-              }`}
+              className={`border-2 border-gray-400 rounded-md p-2 m-2 w-80 ${errorPassword ? "border-red-500" : ""
+                }`}
               value={password2}
               onChange={(e) => setPassword2(e.target.value)}
             />
 
             <button
               type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
             >
               Registrarse
             </button>

@@ -170,7 +170,6 @@ const changePassword = async (args) => {
 const userlogin = async (args) => {
   try {
     const { email, password } = args;
-
     var user = await User.findOne({ email: email });
 
     if (user && bcrypt.compareSync(password, user.password)) {
