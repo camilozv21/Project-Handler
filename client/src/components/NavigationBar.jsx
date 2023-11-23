@@ -4,7 +4,7 @@ import image from './assets/phlogo.png'
 import { RegisterModal } from './RegisterModal'
 import { LoginModal } from './LoginModal'
 import { jwtDecode } from 'jwt-decode';
-import imageUser from './assets/default.png'
+import imageUser from './assets/default123.png'
 
 export const NavigationBar = () => {
   const [showRegister, setShowRegister] = useState(false)
