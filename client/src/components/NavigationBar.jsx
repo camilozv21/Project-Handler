@@ -20,7 +20,7 @@ export const NavigationBar = () => {
         <article className='flex items-center mr-6'>
           <Link to={url} className='block lg:inline-block lg:mt-0 text-black mt-0 hover:text-opacity-70'>
             <div className=' max-w-xs'>
-              <img src={image} alt='Logo de la empresa' className=' w-auto cursor-pointer' />
+              <img src='https://res.cloudinary.com/dj5kafiwa/image/upload/v1700750978/assets/phlogo.png' alt='Logo de la empresa' className=' w-auto cursor-pointer' />
             </div>
           </Link>
         </article>
@@ -34,7 +34,7 @@ export const NavigationBar = () => {
         </article>
         {token && (
           <article className='flex items-center mr-6'>
-            <img src={imageUser} alt='Imagen de usuario' className='w-10 h-10 rounded-full' />
+            <img src='https://res.cloudinary.com/dj5kafiwa/image/upload/v1700750978/assets/default.png' alt='Imagen de usuario' className='w-10 h-10 rounded-full' />
           </article>
         )}
         <LoginModal show={showLogin} onHide={() => setShowLogin(false)} />
