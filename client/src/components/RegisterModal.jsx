@@ -57,7 +57,7 @@ export const RegisterModal = (props) => {
       );
       formData.append("image", img);
 
-      const response = await fetch("http://localhost:5000/graphql", {
+      const response = await fetch("https://project-handler-jvl7.vercel.app/graphql", {
         method: "POST",
         body: formData,
       });
