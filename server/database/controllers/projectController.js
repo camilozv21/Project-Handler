@@ -70,9 +70,45 @@ const createProject = async (args, context) => {
       };
     }
 
+    let imageName = `project_${Date.now()}`;
+
+    if (context.file) {
+      const uploadResult = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream({ 
+          folder: 'uploads', 
+          public_id: imageName,
+          overwrite: true,
+        }, (error, result) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result);
+          }
+        });
+
+        const readableStream = new Readable();
+        readableStream.push(context.file.buffer);
+        readableStream.push(null);
+        
+        readableStream.pipe(stream);
+      });
+
+
+      console.log(uploadResult);
+
+      if (!uploadResult.secure_url) {
+        console.error(
+          "Hubo un problema al subir la imagen a Cloudinary. " +
+            uploadResult.error
+        );
+      }
+
+      imageName = uploadResult.secure_url;
+    }
+
     let project = new Project({
       name: args.name,
-      image: args.image,
+      image: imageName,
       userId: user._id,
     });
 

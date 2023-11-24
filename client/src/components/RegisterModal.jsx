@@ -98,7 +98,7 @@ export const RegisterModal = (props) => {
               className="flex items-center justify-center relative h-24 w-24 bg-blue-500 rounded-full p-2 cursor-pointer"
             >
               <img
-                src={img ? URL.createObjectURL(img) : imgDefault}
+                src={img ? URL.createObjectURL(img) : 'https://res.cloudinary.com/dj5kafiwa/image/upload/v1700750978/assets/default.png'}
                 alt="usuario default"
               />
               <span className="absolute z-20 font-semibold text-center text-white inset-0 rounded-full flex items-center justify-center bg-blue-700 opacity-5 hover:opacity-100 transition-opacity ">

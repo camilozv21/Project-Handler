@@ -11,13 +11,17 @@ const schema = require("./database/schema/schema");
 const { validateToken } = require("./middleware/auth");
 const multer = require("multer");
 const path = require('path');
+const cloudinary = require('cloudinary').v2;
+          
+cloudinary.config({ 
+  cloud_name: 'dj5kafiwa', 
+  api_key: '975994624571698', 
+  api_secret: 'kz74sOlCXErz9b1z9CoRfQzo8FI' 
+});
 
 const app = express();
 
 connectDB();
-
-const uploadsFolder = path.join(__dirname, 'uploads');
-app.use('/uploads', express.static(uploadsFolder));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
