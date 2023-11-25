@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import image from "./assets/phlogo.png";
 import { RegisterModal } from "./RegisterModal";
 import { LoginModal } from "./LoginModal";
 import { jwtDecode } from "jwt-decode";
-import imageUser from "./assets/default123.png";
 import { validateToken, removeToken } from "../utils/token";
 
 export const NavigationBar = () => {
@@ -12,10 +10,14 @@ export const NavigationBar = () => {
   const [showLogin, setShowLogin] = useState(false);
   const validToken = validateToken();
 
-  const logOut = ()=>{
-      removeToken();
-      window.location.reload();
+  const logOut = () => {
+    removeToken();
+    window.location.reload();
   }
+
+  const token = localStorage.getItem('token')
+  const decoded = token ? jwtDecode(token) : null;
+  const url = decoded ? `/dashboard` : '/'
 
   return (
     <header className='w-full sticky'>
@@ -43,6 +45,13 @@ export const NavigationBar = () => {
                 onClick={() => setShowRegister(true)}
               >
                 Registrarse
+              </Link>
+              <Link
+                to="/"
+                className="no-underline text-sm md:text-base lg:text-lg text-black font-semibold ml-2 md:ml-5"
+                onClick={() => logOut()}
+              >
+                Cerrar Sesión
               </Link>
             </>
           )}
