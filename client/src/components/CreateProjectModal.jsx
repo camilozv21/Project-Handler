@@ -5,25 +5,50 @@ import { ADD_PROJECT_MUTATION } from "../graphql/projectMutations";
 
 export const CreateProjectModal = (props) => {
   const [name, setName] = useState("");
-  const [img, setImg] = useState("");
+  const [img, setImg] = useState(null);
   const [addProjectMutation, { loading, error, data }] = useMutation(ADD_PROJECT_MUTATION);
 
   const handleFileUpload = (e) => {
-    setImg(e.target.files[0].name);
+    setImg(e.target.files[0]);
   }
+
+  const handleClose = () => {
+    setImg(null);
+    setName("");
+    props.onHide();
+  };
 
   const handleAddProject = async (e) => {
     try {
       e.preventDefault();
-      const result = await addProjectMutation({
-        variables: {
-          name: name,
-          image: img,
+      const formData = new FormData();
+      formData.append(
+        "query",
+        `
+        mutation {
+          addProject(
+            name: "${name}",
+            image: ""
+          ) {
+            message
+            statusCode
+          }
+        }
+      `
+      );
+      formData.append("image", img);
+      
+      const response = await fetch("http://localhost:5000/graphql", {
+        method: "POST",
+        body: formData,
+        headers: {
+          'Authorization': localStorage.getItem("token"),
         },
       });
+      let result = await response.json();
 
       if (result.data) {
-        props.onHide();
+        handleClose();
       }
     } catch (error) {
       console.error("Error en la mutación:", error.message);
@@ -31,7 +56,7 @@ export const CreateProjectModal = (props) => {
   }
   return (
     <>
-      <Modal {...props} size="md">
+      <Modal {...props} onHide={handleClose} size="md">
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
             Nuevo proyecto
@@ -47,6 +72,8 @@ export const CreateProjectModal = (props) => {
               id="file"
               className="hidden"
               onChange={handleFileUpload}
+              multiple={false}
+              accept="image/*"
             />
             <label
               htmlFor="file"

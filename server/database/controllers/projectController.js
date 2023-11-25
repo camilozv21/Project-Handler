@@ -2,6 +2,8 @@ const Project = require("../models/Project");
 const User = require("../models/User");
 const { removeManyTasks } = require("./taskController");
 const { validateUser } = require("../../middleware/auth");
+const cloudinary = require("cloudinary").v2;
+const { Readable } = require('stream');
 
 const getProjectById = async (args, context) => {
   try {
