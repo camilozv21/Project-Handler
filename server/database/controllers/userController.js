@@ -49,7 +49,6 @@ const createUser = async (args, context) => {
       if (!fs.existsSync("./server/uploads")) {
         fs.mkdirSync("./server/uploads");
       }
-      console.log();
       fs.writeFileSync(`./server/uploads/${imageName}`, context.file.buffer);
     }
 

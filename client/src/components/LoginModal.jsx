@@ -2,13 +2,11 @@ import Modal from "react-bootstrap/Modal";
 import React, { useState } from "react";
 import { LOGIN_MUTATION } from "../graphql/userMutations";
 import { useMutation } from '@apollo/client';
-import { useNavigate } from "react-router-dom";
 
 export const LoginModal = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginMutation, { loading, error, data }] = useMutation(LOGIN_MUTATION);
-  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     try {
@@ -19,11 +17,10 @@ export const LoginModal = (props) => {
           password: password,
         },
       });
-      console.log(result.data.login);
       if (!result.error && result.data.login.statusCode === 200) {
         localStorage.setItem('token', result.data.login.token);
         localStorage.setItem('exp', result.data.login.expiresIn);
-        navigate(`/dashboard`); // Retirar el id del usuario
+        window.location.reload();
       }
       else {
         if (result.errors && result.errors.length > 0) {
