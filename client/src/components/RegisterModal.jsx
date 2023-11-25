@@ -63,7 +63,6 @@ export const RegisterModal = (props) => {
       });
       let result = await response.json();
 
-      console.log(result);
       if (result.data) {
         handleClose();
       }
