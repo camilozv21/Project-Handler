@@ -1,7 +1,7 @@
 import React from 'react';
 import { Resizable } from 're-resizable';
 import { Sidebar } from '../components/Sidebar';
-import imageNoProjects from '../components/assets/noproject.png'
+import images from '../components/assets/noproject.png'
 import { useState } from 'react';
 import { PrincipalContent } from '../components/PrincipalContent';
 
@@ -30,7 +30,7 @@ export const Dashboard = () => {
       <div className="bg-white flex-grow">
         {showPrincipalContent ? <PrincipalContent projectId={selectedProjectId} /> :
           <div className='flex justify-center items-center w-full h-full'>
-            <img src={imageNoProjects} alt="No project image" className='rounded shadow w-full h-auto sm:w-3/5 sm:h-3/5' />
+            <img src='https://res.cloudinary.com/dj5kafiwa/image/upload/v1700750979/assets/noproject.png' alt="No project image" className='rounded shadow w-full h-auto sm:w-3/5 sm:h-3/5' />
           </div>
         }
       </div>
