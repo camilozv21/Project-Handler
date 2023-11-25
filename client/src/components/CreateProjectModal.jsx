@@ -2,15 +2,17 @@ import Modal from "react-bootstrap/Modal";
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { ADD_PROJECT_MUTATION } from "../graphql/projectMutations";
+import { removeToken } from "../utils/token";
 
 export const CreateProjectModal = (props) => {
   const [name, setName] = useState("");
   const [img, setImg] = useState(null);
-  const [addProjectMutation, { loading, error, data }] = useMutation(ADD_PROJECT_MUTATION);
+  const [addProjectMutation, { loading, error, data }] =
+    useMutation(ADD_PROJECT_MUTATION);
 
   const handleFileUpload = (e) => {
     setImg(e.target.files[0]);
-  }
+  };
 
   const handleClose = () => {
     setImg(null);
@@ -37,23 +39,39 @@ export const CreateProjectModal = (props) => {
       `
       );
       formData.append("image", img);
-      
-      const response = await fetch("http://localhost:5000/graphql", {
-        method: "POST",
-        body: formData,
-        headers: {
-          'Authorization': localStorage.getItem("token"),
-        },
-      });
+
+      const response = await fetch(
+        "https://project-handler-jvl7.vercel.app/graphql",
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
       let result = await response.json();
 
-      if (result.data) {
-        handleClose();
+      if (!result.data || result.errors) {
+        if (result.errors.length > 0) {
+          alert(result.errors[0].message);
+        } else {
+          alert("Ha ocurrido un error en el servidor.");
+        }
+      } else {
+        if (result.data.addProject.statusCode === 200) {
+          handleClose();
+        } else if (result.data.addProject.statusCode === 401) {
+          removeToken();
+          window.location.reload();
+        } else {
+          alert(result.data.addProject.message);
+        }
       }
     } catch (error) {
       console.error("Error en la mutación:", error.message);
     }
-  }
+  };
   return (
     <>
       <Modal {...props} onHide={handleClose} size="md">
@@ -96,11 +114,18 @@ export const CreateProjectModal = (props) => {
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
-              {loading ? <div className="spinner-border text-primary" role="status"></div> : "Crear"}
+              {loading ? (
+                <div
+                  className="spinner-border text-primary"
+                  role="status"
+                ></div>
+              ) : (
+                "Crear"
+              )}
             </button>
           </form>
         </Modal.Body>
       </Modal>
     </>
-  )
-}
+  );
+};

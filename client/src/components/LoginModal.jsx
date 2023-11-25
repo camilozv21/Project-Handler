@@ -1,7 +1,7 @@
 import Modal from "react-bootstrap/Modal";
 import React, { useState } from "react";
 import { LOGIN_MUTATION } from "../graphql/userMutations";
-import { useMutation } from '@apollo/client';
+import { useMutation } from "@apollo/client";
 
 export const LoginModal = (props) => {
   const [email, setEmail] = useState("");
@@ -18,24 +18,19 @@ export const LoginModal = (props) => {
         },
       });
       if (!result.error && result.data.login.statusCode === 200) {
-        localStorage.setItem('token', result.data.login.token);
-        localStorage.setItem('exp', result.data.login.expiresIn);
+        localStorage.setItem("token", result.data.login.token);
+        localStorage.setItem("exp", result.data.login.expiresIn);
         window.location.reload();
-      }
-      else {
+      } else {
         if (result.errors && result.errors.length > 0) {
           alert(result.errors[0].message);
-        }
-        else {
+        } else {
           alert(result.data.login.message);
         }
       }
-      if (result.data) {
-        props.onHide();
-      }
-
+      props.onHide();
     } catch (error) {
-      console.error('Error en la mutación:', error.message);
+      console.error("Error en la mutación:", error.message);
     }
   };
 
@@ -70,7 +65,14 @@ export const LoginModal = (props) => {
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
-              {loading ? <div className="spinner-border text-primary" role="status"></div> : "Iniciar sesión"}
+              {loading ? (
+                <div
+                  className="spinner-border text-primary"
+                  role="status"
+                ></div>
+              ) : (
+                "Iniciar sesión"
+              )}
             </button>
           </form>
         </Modal.Body>
