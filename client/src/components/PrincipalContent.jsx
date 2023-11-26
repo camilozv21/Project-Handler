@@ -38,7 +38,6 @@ export const PrincipalContent = (props) => {
                   name={task.name}
                   status={task.status}
                   deadLine={task.deadLine}
-                  image={task.image}
                   description={task.description}
                   projectId={props.projectId}
                 />
