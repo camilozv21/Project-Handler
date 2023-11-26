@@ -63,8 +63,21 @@ export const RegisterModal = (props) => {
       });
       let result = await response.json();
 
-      if (result.data) {
-        handleClose();
+      if (!result.data || result.errors) {
+        if (result.errors.length > 0) {
+          alert(result.errors[0].message);
+        } else {
+          alert("Ha ocurrido un error en el servidor.");
+        }
+      } else {
+        if (result.data.addUser.statusCode === 200) {
+          handleClose();
+        } else if (result.data.addUser.statusCode === 401) {
+          removeToken();
+          window.location.reload();
+        } else {
+          alert(result.data.addUser.message);
+        }
       }
     } catch (error) {
       console.error("Error en la mutación:", error.message);
