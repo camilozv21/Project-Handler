@@ -28,6 +28,7 @@ export const TaskFormModal = (props) => {
 
       if (result.data) {
         handleClose();
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error en la mutación:", error.message);
