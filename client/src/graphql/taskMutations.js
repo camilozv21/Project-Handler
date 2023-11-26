@@ -25,4 +25,29 @@ const ADD_TASK_MUTATION = gql`
   }
 `;
 
-export { ADD_TASK_MUTATION };
+const EDIT_TASK_MUTATION = gql`
+  mutation updateTask(
+    $id: ID!
+    $name: String!
+    $description: String!
+    $deadLine: String!
+  ) {
+    updateTask(
+      id: $id
+      name: $name
+      description: $description
+      deadLine: $deadLine
+    ) {
+      statusCode
+      task {
+        id
+        name
+        description
+        deadLine
+        status
+      }
+    }
+  }
+`;
+
+export { ADD_TASK_MUTATION, EDIT_TASK_MUTATION };
