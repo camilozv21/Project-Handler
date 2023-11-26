@@ -20,12 +20,15 @@ export const PrincipalContent = (props) => {
   ></div></div>;
   if (error) return <p>Error : {error.message}</p>;
 
+  let imageUrl = data.project.project.image.startsWith('project') ? 'https://res.cloudinary.com/dj5kafiwa/image/upload/v1701020823/assets/project_default.jpg' : data.project.project.image;
+
+  let altUrl = data.project.project.image.startsWith('project') ? data.project.project.image : 'Imagen por defecto';
 
   return (
     <>
       <div className="w-full h-full">
         <div className="flex flex-row gap-3 py-3">
-          <img src={data.project.project.image} alt={data.project.project.name} className="rounded w-20 h-auto" />
+          <img src={imageUrl} alt={altUrl} className="rounded w-20 h-auto" />
           <p className="text-center text-2xl font-semibold mb-0 capitalize">{data.project.project.name}</p>
         </div>
         <div className="w-full h-auto p-4">
@@ -35,6 +38,7 @@ export const PrincipalContent = (props) => {
               return (
                 <TaskCard
                   key={task.id}
+                  id={task.id}
                   name={task.name}
                   status={task.status}
                   deadLine={task.deadLine}
