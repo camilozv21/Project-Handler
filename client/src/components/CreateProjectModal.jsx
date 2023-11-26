@@ -116,7 +116,7 @@ export const CreateProjectModal = (props) => {
             >
               {loading ? (
                 <div
-                  className="spinner-border text-primary"
+                  className="spinner-border text-light"
                   role="status"
                 ></div>
               ) : (
