@@ -1,5 +1,6 @@
 import { useQuery } from "@apollo/client"
 import { GET_PROJECTS_QUERY } from "../graphql/projectQueries"
+import projectImg from './assets/projectdefault.png'
 
 export const ShowProjects = (props) => {
   const { loading, error, data } = useQuery(GET_PROJECTS_QUERY);
@@ -19,7 +20,7 @@ export const ShowProjects = (props) => {
     <>
       {data.projects.projects.map((project, i) => (
         <div key={project.name + i} className="flex flex-row items-center gap-2 cursor-pointer px-2" onClick={() => handleOnClick(project.id)}>
-          <img src={project.image} alt={project.name} className="h-10 w-10 rounded-full" />
+          <img src={project.imagej || projectImg} alt={project.name || 'Imagen por default'} className="h-10 w-10 rounded-full" />
           <p className="text-center mb-0 font-semibold">{project.name}</p>
         </div>
       ))}
