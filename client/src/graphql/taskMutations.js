@@ -31,12 +31,14 @@ const EDIT_TASK_MUTATION = gql`
     $name: String!
     $description: String!
     $deadLine: String!
+    $status: String!
   ) {
     updateTask(
       id: $id
       name: $name
       description: $description
       deadLine: $deadLine
+      status: $status
     ) {
       statusCode
       task {
@@ -50,4 +52,12 @@ const EDIT_TASK_MUTATION = gql`
   }
 `;
 
-export { ADD_TASK_MUTATION, EDIT_TASK_MUTATION };
+const DELETE_TASK_MUTATION = gql`
+  mutation deleteTask($id: ID!) {
+    deleteTask(id: $id) {
+      statusCode
+    }
+  }
+`;
+
+export { ADD_TASK_MUTATION, EDIT_TASK_MUTATION, DELETE_TASK_MUTATION };
