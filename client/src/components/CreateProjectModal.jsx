@@ -60,6 +60,7 @@ export const CreateProjectModal = (props) => {
         }
       } else {
         if (result.data.addProject.statusCode === 200) {
+          window.location.reload();
           handleClose();
         } else if (result.data.addProject.statusCode === 401) {
           removeToken();
@@ -116,7 +117,7 @@ export const CreateProjectModal = (props) => {
             >
               {loading ? (
                 <div
-                  className="spinner-border text-primary"
+                  className="spinner-border text-light"
                   role="status"
                 ></div>
               ) : (

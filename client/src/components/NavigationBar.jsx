@@ -4,6 +4,8 @@ import { RegisterModal } from "./RegisterModal";
 import { LoginModal } from "./LoginModal";
 import { jwtDecode } from "jwt-decode";
 import { validateToken, removeToken } from "../utils/token";
+import { useQuery } from "@apollo/client";
+import { GET_USER } from "../graphql/userQueries";
 
 export const NavigationBar = () => {
   const [showRegister, setShowRegister] = useState(false);
@@ -16,6 +18,13 @@ export const NavigationBar = () => {
   }
 
   const token = localStorage.getItem("token");
+  let data, loading, error;
+  if (token) {
+    const decodedToken = jwtDecode(token);
+    ({ data, loading, error } = useQuery(GET_USER, {
+      variables: { _id: decodedToken.userId },
+    }));
+  }
 
   return (
     <header className='w-full sticky'>
@@ -56,7 +65,11 @@ export const NavigationBar = () => {
             >
               Cerrar Sesión
             </Link>
-            <img src='https://res.cloudinary.com/dj5kafiwa/image/upload/v1700750978/assets/default.png' alt='Imagen de usuario' className='w-10 h-10 rounded-full ml-2' />
+            <img
+              src={data ? data.user.user.image : 'https://res.cloudinary.com/dj5kafiwa/image/upload/v1700750978/assets/default.png'}
+              alt='Imagen de usuario'
+              className='w-10 h-10 rounded-full ml-2'
+            />
           </div>
         )}
         <LoginModal show={showLogin} onHide={() => setShowLogin(false)} />

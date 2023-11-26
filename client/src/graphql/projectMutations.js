@@ -8,4 +8,12 @@ const ADD_PROJECT_MUTATION = gql`
   }
 `;
 
-export { ADD_PROJECT_MUTATION };
+const DELETE_PROJECT_MUTATION = gql`
+  mutation deleteProject($id: ID!) {
+    deleteProject(id: $id) {
+      statusCode
+    }
+  }
+`;
+
+export { ADD_PROJECT_MUTATION, DELETE_PROJECT_MUTATION };

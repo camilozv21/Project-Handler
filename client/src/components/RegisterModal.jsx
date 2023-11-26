@@ -1,8 +1,5 @@
 import Modal from "react-bootstrap/Modal";
 import { useState } from "react";
-import imgDefault from "./assets/default123.png";
-import { useMutation } from "@apollo/client";
-import { REGISTER_MUTATION } from "../graphql/userMutations";
 
 export const RegisterModal = (props) => {
   const [name, setName] = useState("");
@@ -12,6 +9,7 @@ export const RegisterModal = (props) => {
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -57,11 +55,15 @@ export const RegisterModal = (props) => {
       );
       formData.append("image", img);
 
+      setIsLoading(true);
+
       const response = await fetch("https://project-handler-jvl7.vercel.app/graphql", {
         method: "POST",
         body: formData,
       });
       let result = await response.json();
+
+      setIsLoading(false);
 
       if (!result.data || result.errors) {
         if (result.errors.length > 0) {
@@ -80,6 +82,7 @@ export const RegisterModal = (props) => {
         }
       }
     } catch (error) {
+      setIsLoading(false);
       console.error("Error en la mutación:", error.message);
     }
   };
@@ -166,7 +169,14 @@ export const RegisterModal = (props) => {
               type="submit"
               className="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
             >
-              Registrarse
+              {isLoading ? (
+                <div
+                  className="spinner-border text-light"
+                  role="status"
+                ></div>
+              ) : (
+                "Registrarse"
+              )}
             </button>
           </form>
         </Modal.Body>

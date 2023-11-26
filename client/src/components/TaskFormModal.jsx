@@ -28,6 +28,7 @@ export const TaskFormModal = (props) => {
 
       if (result.data) {
         handleClose();
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error en la mutación:", error.message);
@@ -71,7 +72,14 @@ export const TaskFormModal = (props) => {
               type="submit"
               className="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
             >
-              Crear
+              {loading ? (
+                <div
+                  className="spinner-border text-light"
+                  role="status"
+                ></div>
+              ) : (
+                "Crear"
+              )}
             </button>
           </form>
         </Modal.Body>
