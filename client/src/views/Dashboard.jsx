@@ -1,16 +1,17 @@
 import React from 'react';
 import { Resizable } from 're-resizable';
 import { Sidebar } from '../components/Sidebar';
-import images from '../components/assets/noproject.png'
 import { useState } from 'react';
 import { PrincipalContent } from '../components/PrincipalContent';
 
 export const Dashboard = () => {
-  const [showPrincipalContent, setShowPrincipalContent] = useState(false)
+  const [showPrincipalContent, setShowPrincipalContent] = useState(true)
   const [selectedProjectId, setSelectedProjectId] = useState(null);
+  const [isFirstTime, setIsFirstTime] = useState(false)
 
   const togglePrincipalContent = () => {
-    setShowPrincipalContent(!showPrincipalContent)
+    setShowPrincipalContent(showPrincipalContent)
+    setIsFirstTime(true)
   }
 
   return (
@@ -28,7 +29,7 @@ export const Dashboard = () => {
         <Sidebar togglePrincipalContent={togglePrincipalContent} setSelectedProjectId={setSelectedProjectId} />
       </Resizable>
       <div className="bg-white flex-grow">
-        {showPrincipalContent ? <PrincipalContent projectId={selectedProjectId} /> :
+        {showPrincipalContent && isFirstTime ? <PrincipalContent projectId={selectedProjectId} /> :
           <div className='flex justify-center items-center w-full h-full'>
             <img src='https://res.cloudinary.com/dj5kafiwa/image/upload/v1700750979/assets/noproject.png' alt="No project image" className='rounded shadow w-full h-auto sm:w-3/5 sm:h-3/5' />
           </div>

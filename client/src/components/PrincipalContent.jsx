@@ -14,7 +14,10 @@ export const PrincipalContent = (props) => {
   useEffect(() => {
   }, [data])
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <div className="text-center"><div
+    className="spinner-border text-primary"
+    role="status"
+  ></div></div>;
   if (error) return <p>Error : {error.message}</p>;
 
 
