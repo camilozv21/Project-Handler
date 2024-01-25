@@ -35,6 +35,7 @@ const getUserById = async (context) => {
 const createUser = async (args, context) => {
   try {
     let imageName = `user_${Date.now()}`;
+    let imgFaceId = `user_${Date.now()}_faceId`;
     console.log(context)
 
     if (context.file) {
@@ -71,12 +72,47 @@ const createUser = async (args, context) => {
       imageName = uploadResult.secure_url;
     }
 
+    if (context.imgFaceId) {
+      const uploadResult = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream({
+          folder: 'uploads',
+          public_id: imgFaceId,
+          overwrite: true,
+        }, (error, result) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result);
+          }
+        });
+
+        const readableStream = new Readable();
+        readableStream.push(context.file.buffer);
+        readableStream.push(null);
+
+        readableStream.pipe(stream);
+      });
+
+
+      console.log(uploadResult);
+
+      if (!uploadResult.secure_url) {
+        console.error(
+          "Hubo un problema al subir la imagen a Cloudinary. " +
+          uploadResult.error
+        );
+      }
+
+      imgFaceId = uploadResult.secure_url;
+    }
+
     let newUser = new User({
       name: args.name,
       lastname: args.lastname,
       email: args.email,
       password: await bcrypt.hash(args.password, 10),
       image: imageName,
+      imgFaceId: imgFaceId,
     });
 
     let user = await newUser.save();
