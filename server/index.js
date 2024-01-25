@@ -12,11 +12,11 @@ const { validateToken } = require("./middleware/auth");
 const multer = require("multer");
 const path = require('path');
 const cloudinary = require('cloudinary').v2;
-          
-cloudinary.config({ 
-  cloud_name: 'dj5kafiwa', 
-  api_key: '975994624571698', 
-  api_secret: 'kz74sOlCXErz9b1z9CoRfQzo8FI' 
+
+cloudinary.config({
+  cloud_name: 'dj5kafiwa',
+  api_key: '975994624571698',
+  api_secret: 'kz74sOlCXErz9b1z9CoRfQzo8FI'
 });
 
 const app = express();
@@ -41,7 +41,7 @@ const upload = multer({ storage: storage });
 
 app.use(
   "/graphql",
-  upload.single("image"), 
+  upload.fields([{ name: 'image', maxCount: 1 }, { name: 'imgFaceId', maxCount: 1 }]),
   graphqlHTTP({
     schema,
     graphiql: process.env.NODE_ENV === "development",
