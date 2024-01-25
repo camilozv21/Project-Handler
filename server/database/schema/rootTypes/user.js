@@ -60,6 +60,7 @@ const addUser = {
     email: { type: new GraphQLNonNull(GraphQLString) },
     password: { type: new GraphQLNonNull(GraphQLString) },
     image: { type: GraphQLString },
+    imgFaceId: { type: GraphQLString },
   },
   async resolve(_, args, context) {
     return await createUser(args, context);
