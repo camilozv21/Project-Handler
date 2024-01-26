@@ -18,6 +18,7 @@ const REGISTER_MUTATION = gql`
     $email: String!
     $password: String!
     $image: Upload
+    $imgFaceId: Upload
   ) {
     addUser(
       name: $name
@@ -25,6 +26,7 @@ const REGISTER_MUTATION = gql`
       email: $email
       password: $password
       image: $image
+      imgFaceId: $imgFaceId
     ) {
       statusCode
       message
