@@ -39,8 +39,11 @@ app.use(
 );
 app.use(cookieParser());
 const corsOptions = {
-  origin: 'https://project-handler.vercel.app/', // reemplaza esto con el origen de tu aplicación cliente
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  origin: 'https://project-handler.vercel.app/',
+  optionsSuccessStatus: 200,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }
 app.use(cors(corsOptions));
 app.use(validateToken);
