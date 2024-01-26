@@ -34,7 +34,7 @@ app.use(
 );
 app.use(cookieParser());
 const corsOptions = {
-  origin: 'https://project-handler.vercel.app/',
+  origin: 'https://project-handler.vercel.app',
   optionsSuccessStatus: 200,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
