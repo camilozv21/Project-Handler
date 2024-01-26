@@ -17,9 +17,19 @@ export const RegisterModal = (props) => {
   const videoRef = useRef();
   const canvasRef = useRef();
 
-  const handleCloseVideo = () => setShow(false);
+  const handleCloseVideo = () => {
+    setShow(false);
+    stopCamera();
+  };
   const handleShowVideo = () => setShow(true);
 
+  const stopCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const tracks = videoRef.current.srcObject.getTracks();
+      tracks.forEach(track => track.stop());
+      videoRef.current.srcObject = null;
+    }
+  };
 
   const startCamera = async () => {
     handleShowVideo();
