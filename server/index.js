@@ -13,11 +13,6 @@ const multer = require("multer");
 const path = require('path');
 const cloudinary = require('cloudinary').v2;
 
-// cloudinary.config({
-//   cloud_name: 'dj5kafiwa',
-//   api_key: '975994624571698',
-//   api_secret: 'kz74sOlCXErz9b1z9CoRfQzo8FI'
-// });
 cloudinary.config({
   cloud_name: 'dgogba6lz',
   api_key: '931748848346276',
