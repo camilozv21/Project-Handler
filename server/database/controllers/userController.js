@@ -53,7 +53,7 @@ const createUser = async (args, context) => {
         });
 
         const readableStream = new Readable();
-        readableStream.push(context.file.buffer);
+        readableStream.push(context.files['image'].buffer);
         readableStream.push(null);
 
         readableStream.pipe(stream);
@@ -87,7 +87,7 @@ const createUser = async (args, context) => {
         });
 
         const readableStream = new Readable();
-        readableStream.push(context.imgFaceId.buffer);
+        readableStream.push(context.files['imgFaceId'].buffer);
         readableStream.push(null);
 
         readableStream.pipe(stream);
