@@ -115,7 +115,7 @@ export const RegisterModal = (props) => {
         body: formData,
       });
       let result = await response.json();
-
+      console.log(result)
       setIsLoading(false);
 
       if (!result.data || result.errors) {
@@ -269,7 +269,7 @@ export const RegisterModal = (props) => {
           </button>
           {imageSrc ? (
             <button className="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" onClick={retakeImage}>
-              Retake Image
+              Repetir foto
             </button>
           ) : (
             <button className="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" onClick={captureImage}>
