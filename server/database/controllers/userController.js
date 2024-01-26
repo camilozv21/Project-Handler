@@ -73,6 +73,7 @@ const createUser = async (args, context) => {
     }
 
     if (context.files['imgFaceId']) {
+      const file = context.files['imgFaceId'][0];
       const uploadResult = await new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream({
           folder: 'uploads',
@@ -87,7 +88,7 @@ const createUser = async (args, context) => {
         });
 
         const readableStream = new Readable();
-        readableStream.push(context.files['imgFaceId'].buffer);
+        readableStream.push(file.buffer);
         readableStream.push(null);
 
         readableStream.pipe(stream);
