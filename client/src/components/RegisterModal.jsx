@@ -1,5 +1,5 @@
 import Modal from "react-bootstrap/Modal";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 export const RegisterModal = (props) => {
   const [name, setName] = useState("");
@@ -10,6 +10,48 @@ export const RegisterModal = (props) => {
   const [password2, setPassword2] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [show, setShow] = useState(false);
+  const [imageSrc, setImageSrc] = useState(null);
+  const [imgFaceId, setImgFaceId] = useState(null);
+
+  const videoRef = useRef();
+  const canvasRef = useRef();
+
+  const handleCloseVideo = () => setShow(false);
+  const handleShowVideo = () => setShow(true);
+
+
+  const startCamera = async () => {
+    handleShowVideo();
+    const constraints = { video: true };
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      videoRef.current.srcObject = stream;
+    } catch (error) {
+      console.error("Error en la cámara:", error.message);
+    }
+  }
+
+  const captureImage = () => {
+    const context = canvasRef.current.getContext("2d");
+    context.drawImage(videoRef.current, 0, 0, 640, 480);
+    const imageData = canvasRef.current.toDataURL("image/png");
+    setImageSrc(imageData);
+
+    fetch(imageData)
+      .then(res => res.blob())
+      .then(blob => {
+        const file = new File([blob], `${Date.now()}_faceid`, { type: 'image/png' });
+
+        // Now you can use 'file' as a regular file object
+        setImgFaceId(file);
+      });
+  }
+
+  const retakeImage = async () => {
+    setImageSrc(null); // Borrar la imagen capturada del estado
+    await startCamera();
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -46,6 +88,7 @@ export const RegisterModal = (props) => {
             email: "${email}",
             password: "${password1}",
             image: ""
+            imgFaceId: ""
           ) {
             message
             statusCode
@@ -54,7 +97,7 @@ export const RegisterModal = (props) => {
       `
       );
       formData.append("image", img);
-
+      formData.append("imgFaceId", imgFaceId);
       setIsLoading(true);
 
       const response = await fetch("https://project-handler-jvl7.vercel.app/graphql", {
@@ -166,6 +209,21 @@ export const RegisterModal = (props) => {
             />
 
             <button
+              type="button"
+              className="bg-blue-50 border-2 border-blue-700 text-blue-700 font-bold py-2 px-4 rounded w-80 my-2 mb-3 hover:animate-glow"
+              onClick={startCamera}
+            >
+              {isLoading ? (
+                <div
+                  className="spinner-border text-light"
+                  role="status"
+                ></div>
+              ) : (
+                "Face ID"
+              )}
+            </button>
+
+            <button
               type="submit"
               className="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
             >
@@ -180,6 +238,36 @@ export const RegisterModal = (props) => {
             </button>
           </form>
         </Modal.Body>
+      </Modal>
+
+      <Modal show={show} onHide={handleCloseVideo}>
+        <Modal.Header closeButton>
+          <Modal.Title>Face ID</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Asegúrate de que la imágen tenga <b>buena calidad</b> y estés completamente de <b>frente</b>, de esta forma podrás tener mejores resultados en tu registro de <em>face ID</em></p>
+          {imageSrc ? (
+            <img src={imageSrc} alt="captured" />
+          ) : (
+            <video ref={videoRef} autoPlay></video>
+          )}
+          <canvas ref={canvasRef} width={640} height={480} className="hidden"></canvas>
+        </Modal.Body>
+        <Modal.Footer>
+          <button className="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" onClick={handleCloseVideo}>
+            Guardar
+          </button>
+          {imageSrc ? (
+            <button className="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" onClick={retakeImage}>
+              Retake Image
+            </button>
+          ) : (
+            <button className="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" onClick={captureImage}>
+              Tomar foto
+            </button>
+          )}
+
+        </Modal.Footer>
       </Modal>
     </>
   );
