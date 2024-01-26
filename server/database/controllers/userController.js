@@ -38,7 +38,7 @@ const createUser = async (args, context) => {
     let imgFaceId = `user_${Date.now()}_faceId`;
     console.log(context)
 
-    if (context.file) {
+    if (context.files['image']) {
       const uploadResult = await new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream({
           folder: 'uploads',
@@ -72,7 +72,7 @@ const createUser = async (args, context) => {
       imageName = uploadResult.secure_url;
     }
 
-    if (context.imgFaceId) {
+    if (context.files['imgFaceId']) {
       const uploadResult = await new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream({
           folder: 'uploads',
