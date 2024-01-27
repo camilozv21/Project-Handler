@@ -26,7 +26,10 @@ export const RegisterModal = (props) => {
   const stopCamera = () => {
     if (videoRef.current && videoRef.current.srcObject) {
       const tracks = videoRef.current.srcObject.getTracks();
-      tracks.forEach(track => track.stop());
+      tracks.forEach((track) => {
+        track.stop();
+        videoRef.current.srcObject.removeTrack(track);
+      });
       videoRef.current.srcObject = null;
     }
   };
@@ -49,7 +52,7 @@ export const RegisterModal = (props) => {
 
     const aspectRatio = video.videoWidth / video.videoHeight;
 
-    let canvasWidth = 640; // puedes ajustar este valor
+    let canvasWidth = 640;
     let canvasHeight = canvasWidth / aspectRatio;
 
     canvas.width = canvasWidth;
@@ -271,7 +274,7 @@ export const RegisterModal = (props) => {
           {imageSrc ? (
             <img src={imageSrc} alt="captured" />
           ) : (
-            <video ref={videoRef} autoPlay></video>
+            <video ref={videoRef} autoPlay className="scale-x-100"></video>
           )}
           <canvas ref={canvasRef} width={640} height={480} className="hidden"></canvas>
         </Modal.Body>
