@@ -257,7 +257,7 @@ export const RegisterModal = (props) => {
         <Modal.Body>
           <p>Asegúrate de que la imágen tenga <b>buena calidad</b> y estés completamente de <b>frente</b>, de esta forma podrás tener mejores resultados en tu registro de <em>face ID</em></p>
           {imageSrc ? (
-            <img src={imageSrc} alt="captured" />
+            <img src={imageSrc} alt="captured" className=" object-cover" />
           ) : (
             <video ref={videoRef} autoPlay></video>
           )}
