@@ -18,8 +18,8 @@ export const RegisterModal = (props) => {
   const canvasRef = useRef();
 
   const handleCloseVideo = () => {
-    setShow(false);
     stopCamera();
+    setShow(false);
   };
   const handleShowVideo = () => setShow(true);
 
@@ -44,9 +44,10 @@ export const RegisterModal = (props) => {
 
   const captureImage = () => {
     const context = canvasRef.current.getContext("2d");
-    context.drawImage(videoRef.current, 0, 0, 640, 480);
+    context.drawImage(videoRef.current, 0, 0, videoRef.current.videoWidth, videoRef.current.videoHeight);
     const imageData = canvasRef.current.toDataURL("image/png");
     setImageSrc(imageData);
+    stopCamera();
 
     fetch(imageData)
       .then(res => res.blob())
@@ -79,6 +80,7 @@ export const RegisterModal = (props) => {
   };
 
   const handleRegister = async (e) => {
+    stopCamera();
     try {
       e.preventDefault();
       if (password1 !== password2) {
@@ -115,7 +117,6 @@ export const RegisterModal = (props) => {
         body: formData,
       });
       let result = await response.json();
-      console.log(result)
       setIsLoading(false);
 
       if (!result.data || result.errors) {
@@ -251,13 +252,13 @@ export const RegisterModal = (props) => {
       </Modal>
 
       <Modal show={show} onHide={handleCloseVideo}>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton onClick={handleCloseVideo}>
           <Modal.Title>Face ID</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <p>Asegúrate de que la imágen tenga <b>buena calidad</b> y estés completamente de <b>frente</b>, de esta forma podrás tener mejores resultados en tu registro de <em>face ID</em></p>
           {imageSrc ? (
-            <img src={imageSrc} alt="captured" className=" object-cover" />
+            <img src={imageSrc} alt="captured" className="object-cover" />
           ) : (
             <video ref={videoRef} autoPlay></video>
           )}
