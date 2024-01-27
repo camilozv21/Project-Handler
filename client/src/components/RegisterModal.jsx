@@ -40,14 +40,6 @@ export const RegisterModal = (props) => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
       videoRef.current.srcObject = stream;
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      if (isMobile && screen.orientation) {
-        try {
-          await screen.orientation.lock('landscape');
-        } catch (error) {
-          console.error("No se pudo cambiar la orientación:", error.message);
-        }
-      }
     } catch (error) {
       console.error("Error en la cámara:", error.message);
     }
