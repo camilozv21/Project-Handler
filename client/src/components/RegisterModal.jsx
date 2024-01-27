@@ -43,9 +43,20 @@ export const RegisterModal = (props) => {
   }
 
   const captureImage = () => {
-    const context = canvasRef.current.getContext("2d");
-    context.drawImage(videoRef.current, 0, 0, videoRef.current.videoWidth, videoRef.current.videoHeight);
-    const imageData = canvasRef.current.toDataURL("image/png");
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+
+    const aspectRatio = video.videoWidth / video.videoHeight;
+
+    let canvasWidth = 640; // puedes ajustar este valor
+    let canvasHeight = canvasWidth / aspectRatio;
+
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+
+    context.drawImage(video, 0, 0, canvasWidth, canvasHeight);
+    const imageData = canvas.toDataURL("image/png");
     setImageSrc(imageData);
     stopCamera();
 
@@ -258,7 +269,7 @@ export const RegisterModal = (props) => {
         <Modal.Body>
           <p>Asegúrate de que la imágen tenga <b>buena calidad</b> y estés completamente de <b>frente</b>, de esta forma podrás tener mejores resultados en tu registro de <em>face ID</em></p>
           {imageSrc ? (
-            <img src={imageSrc} alt="captured" className="object-cover" />
+            <img src={imageSrc} alt="captured" />
           ) : (
             <video ref={videoRef} autoPlay></video>
           )}
