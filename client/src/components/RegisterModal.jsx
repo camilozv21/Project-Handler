@@ -63,6 +63,9 @@ export const RegisterModal = (props) => {
 
     context.drawImage(video, 0, 0, canvasWidth, canvasHeight);
     const imageData = canvas.toDataURL("image/png");
+
+    context.setTransform(1, 0, 0, 1, 0, 0);
+
     setImageSrc(imageData);
     stopCamera();
 
