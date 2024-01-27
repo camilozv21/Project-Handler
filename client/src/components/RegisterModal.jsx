@@ -274,7 +274,7 @@ export const RegisterModal = (props) => {
           {imageSrc ? (
             <img src={imageSrc} alt="captured" />
           ) : (
-            <video ref={videoRef} autoPlay className="scale-x-100"></video>
+            <video ref={videoRef} autoPlay className="scale-x-[-1]"></video>
           )}
           <canvas ref={canvasRef} width={640} height={480} className="hidden"></canvas>
         </Modal.Body>
